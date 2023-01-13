@@ -13,8 +13,11 @@ if (process.argv[2] === "test") {
 export const config = {
   publicRPC: process.env.PUBLIC_RPC,
   privateRPC: process.env.PRIVATE_RPC,
+
   cakePredictionAddr: process.env.CAKE_PREDICTION,
   cakeOracleAddr: process.env.CAKE_ORACLE,
+  bnbPredictionAddr: process.env.BNB_PREDICTION,
+  bnbOracleAddr: process.env.BNB_ORACLE,
 
   db: {
     user: process.env.DB_USER,
