@@ -2,7 +2,7 @@ import Web3 from "web3";
 import { predictionABI } from "./abi/prediction.js";
 import { config } from "./config.js";
 import * as utils from "./utils.js";
-import * as db from "./utils.js";
+import * as db from "./db.js";
 
 let endpoint;
 if (process.argv[2] === "test") {
@@ -57,6 +57,25 @@ export async function getUserRounds(address) {
   }
 
   return rounds;
+}
+
+async function readWriteRound(roundId) {
+  try {
+    const res = await prediction.methods.rounds(from).call();
+    db.write(res);
+  } catch (err) {
+    console.log(roundId);
+  }
+}
+
+export async function getRounds(from, to) {
+  const queue = [];
+  while (from <= to) {
+    queue.push(readWriteRound(from));
+    from++;
+  }
+
+  await Promise.all(from);
 }
 
 // userRoundsLength("0x5458391eFE085370AEC4d2Cf6ED0a76548125038").then(
