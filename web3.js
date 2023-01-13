@@ -61,7 +61,7 @@ export async function getUserRounds(address) {
 
 async function readWriteRound(roundId) {
   try {
-    const res = await prediction.methods.rounds(from).call();
+    const res = await prediction.methods.rounds(roundId).call();
     db.write(res);
   } catch (err) {
     console.log(roundId);
