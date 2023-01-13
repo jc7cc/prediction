@@ -75,7 +75,7 @@ export async function getRounds(from, to) {
     from++;
   }
 
-  await Promise.all(from);
+  await Promise.all(queue);
 }
 
 // userRoundsLength("0x5458391eFE085370AEC4d2Cf6ED0a76548125038").then(
