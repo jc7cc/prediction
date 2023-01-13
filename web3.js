@@ -68,14 +68,22 @@ async function readWriteRound(roundId) {
   }
 }
 
+readWriteRound(112132);
+
 export async function getRounds(from, to) {
-  const queue = [];
+  let queue = [];
+  let counter = 1;
   while (from <= to) {
     queue.push(readWriteRound(from));
+    if (counter === 100) {
+      await Promise.all(queue);
+      queue = [];
+      counter = 1;
+    } else {
+      counter++;
+    }
     from++;
   }
-
-  await Promise.all(queue);
 }
 
 // userRoundsLength("0x5458391eFE085370AEC4d2Cf6ED0a76548125038").then(
