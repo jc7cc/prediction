@@ -4,7 +4,7 @@ const { Pool } = pg;
 
 export const pool = new Pool(config.db);
 
-const insert = `insert into cake_predict (info) values ($1)`;
+const insert = `insert into bnb_predict (info) values ($1)`;
 
 export function write(info) {
   pool.query(insert, [info]).catch((err) => console.log(err));

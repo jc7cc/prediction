@@ -2,6 +2,7 @@ import Web3 from "web3";
 import { predictionABI } from "./abi/prediction.js";
 import { config } from "./config.js";
 import * as utils from "./utils.js";
+import * as db from "./utils.js";
 
 let endpoint;
 if (process.argv[2] === "test") {
@@ -32,12 +33,12 @@ async function getUserRoundsLength(address) {
   }
 }
 
-async function getUserRounds(address) {
+export async function getUserRounds(address) {
   const resp = await getUserRoundsLength(address);
   if (resp.status === utils.status.fail) {
     console.error(`failed to get user round length`, resp.err);
   }
-  console.log(resp);
+
   const rounds = new Map();
   const size = 100;
   for (let i = 0; i <= resp.length; i += size) {
@@ -50,19 +51,13 @@ async function getUserRounds(address) {
 
       rounds.set(roundId, {
         userData: userRoundData,
-        roundData: roundData,
+        roundData: utils.ignoreNumKey(roundData),
       });
     }
   }
 
-  for (const [k, v] of rounds.entries()) {
-    console.log(k, v);
-  }
+  return rounds;
 }
-
-const target = "0x5458391eFE085370AEC4d2Cf6ED0a76548125038";
-
-getUserRounds(target);
 
 // userRoundsLength("0x5458391eFE085370AEC4d2Cf6ED0a76548125038").then(
 //   console.log,
