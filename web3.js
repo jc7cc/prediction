@@ -43,15 +43,21 @@ async function getUserRounds(address) {
   for (let i = 0; i <= resp.length; i += size) {
     const resp = await prediction.methods.getUserRounds(address, i, size)
       .call();
-    for (let j = 0; j < +resp["2"]; j++) {
+    for (let j = 0; j < +resp["1"].length; j++) {
       const roundId = resp["0"][j];
-      const roundDta = resp["1"][j];
-      console.log(roundId);
-      rounds.set(roundId, roundDta);
+      const roundData = await prediction.methods.rounds(roundId).call();
+      const userRoundData = resp["1"][j];
+
+      rounds.set(roundId, {
+        userData: userRoundData,
+        roundData: roundData,
+      });
     }
   }
 
-  console.log(rounds.size);
+  for (const [k, v] of rounds.entries()) {
+    console.log(k, v);
+  }
 }
 
 const target = "0x5458391eFE085370AEC4d2Cf6ED0a76548125038";
